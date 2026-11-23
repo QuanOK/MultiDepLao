@@ -1,0 +1,10 @@
+bin/
+obj/
+logs/
+*.log
+.vs/
+*.user
+TestResults/
+.claude/settings.local.json
+dist/
+.vscode/

@@ -1,0 +1,21 @@
+﻿MULTI DÉPLÀO – MIỄN TRỪ TRÁCH NHIỆM
+Copyright © 2026 QuânOK – okiemquan@gmail.com
+
+PHẦN MỀM ĐƯỢC CUNG CẤP "NGUYÊN TRẠNG", KHÔNG KÈM BẤT KỲ BẢO ĐẢM NÀO, RÕ RÀNG HAY NGỤ Ý. TÁC GIẢ KHÔNG CHỊU TRÁCH NHIỆM VỀ BẤT KỲ THIỆT HẠI NÀO PHÁT SINH TỪ VIỆC SỬ DỤNG PHẦN MỀM, KỂ CẢ MẤT DỮ LIỆU HAY TÀI KHOẢN ZALO BỊ HẠN CHẾ.
+
+• Multi DépLào là phần mềm độc lập, không phải sản phẩm chính thức và không liên kết với Zalo / VNG.
+• "Zalo" là nhãn hiệu của chủ sở hữu tương ứng.
+• Multi DépLào chạy ứng dụng Zalo PC gốc do người dùng tự cài đặt; người dùng tự chịu trách nhiệm tuân thủ điều khoản sử dụng của Zalo.
+
+Giấy phép và bản chính thức:
+• Multi DépLào là phần mềm tự do theo giấy phép GNU GPL-3.0 (toàn văn trong file LICENSE của mã nguồn).
+  Mã nguồn: https://github.com/QuanOK/MultiDepLao
+• Bản chính thức chỉ có ở https://github.com/QuanOK/MultiDepLao/releases (kèm mã SHA-256 để đối chiếu).
+  Tác giả không chịu trách nhiệm về bản tải từ nơi khác.
+• Tên "Multi DépLào" và logo không thuộc phạm vi giấy phép: bản sửa đổi phải đổi tên và logo, và không được
+  giới thiệu là bản của tác giả.
+
+Quyền riêng tư:
+• Không đọc nội dung tin nhắn.
+• Không gửi dữ liệu ra ngoài, không kết nối Internet.
+• Không sửa và không chèn mã vào Zalo.

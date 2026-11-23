@@ -1,0 +1,395 @@
+﻿<Window x:Class="MultiDepLao.App.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:MultiDepLao.App"
+        Title="Multi DépLào" Width="1100" Height="852" Icon="/Assets/app.ico"
+        Background="{DynamicResource Bg}" Foreground="{DynamicResource Fg}" FontFamily="{StaticResource UiFont}">
+    <Grid>
+    <Grid x:Name="Root">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition x:Name="SidebarCol" Width="240"/>
+            <ColumnDefinition Width="*" MinWidth="550"/>
+        </Grid.ColumnDefinitions>
+
+        <Border x:Name="Sidebar" Grid.Column="0" Background="{DynamicResource Bg}" BorderBrush="{DynamicResource Line}" BorderThickness="0,0,1,0"
+                SizeChanged="Sidebar_SizeChanged">
+        <DockPanel>
+            <DockPanel DockPanel.Dock="Top" x:Name="TopBar" LastChildFill="True">
+                <Button x:Name="CollapseButton" DockPanel.Dock="Right" Style="{StaticResource RoundIconButton}" Margin="0,10,10,8"
+                        Click="CollapseButton_Click" ToolTip="{DynamicResource S.Sidebar.Toggle}">
+                    <TextBlock x:Name="CollapseGlyph" Style="{StaticResource Glyph}" Text="&#xE76B;" FontSize="14" Foreground="{DynamicResource Fg}"/>
+                </Button>
+                <Button x:Name="AddButton" Style="{StaticResource PillButton}" Margin="10,10,6,8" Click="AddButton_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Style="{StaticResource Glyph}" Text="&#xE710;" FontSize="14" Foreground="{DynamicResource AccFg}"/>
+                        <TextBlock x:Name="AddLabel" Text="{DynamicResource S.Sidebar.Add}" Margin="8,0,0,0" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+            </DockPanel>
+            <TextBlock x:Name="ListHeader" DockPanel.Dock="Top" Margin="16,0,12,4" FontSize="12" Foreground="{DynamicResource Muted}" TextTrimming="CharacterEllipsis">
+                <Run x:Name="HeaderCount"/><Run x:Name="HeaderUnread" Foreground="{DynamicResource Err}" FontWeight="SemiBold"/>
+            </TextBlock>
+            <StackPanel DockPanel.Dock="Bottom" Margin="10,6,10,10">
+                <StackPanel x:Name="FooterInfo">
+                    <Border Style="{StaticResource Banner}" Background="{DynamicResource WarnBg}" Visibility="{Binding Visibility, ElementName=CallWarn}">
+                        <Grid>
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                            <TextBlock Style="{StaticResource Glyph}" Text="&#xE895;" FontSize="13" Foreground="{DynamicResource Warn}" VerticalAlignment="Top" Margin="0,1,0,0"/>
+                            <TextBlock x:Name="CallWarn" Grid.Column="1" Foreground="{DynamicResource Warn}" FontSize="11.5" TextWrapping="Wrap" Margin="8,0,0,0" Visibility="Collapsed"/>
+                        </Grid>
+                    </Border>
+                    <TextBlock x:Name="CopyText" Foreground="{DynamicResource Fg}" FontSize="11.5" TextWrapping="Wrap" Visibility="Collapsed"/>
+                    <ProgressBar x:Name="CopyBar" Style="{StaticResource ThinBar}" Height="6" Margin="0,4,0,8" Visibility="Collapsed"/>
+                    <Border Style="{StaticResource Banner}" Background="{DynamicResource WarnBg}" Visibility="{Binding Visibility, ElementName=UpdateNote}">
+                        <Grid>
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                            <TextBlock Style="{StaticResource Glyph}" Text="&#xE895;" FontSize="13" Foreground="{DynamicResource Warn}" VerticalAlignment="Top" Margin="0,1,0,0"/>
+                            <TextBlock x:Name="UpdateNote" Grid.Column="1" Foreground="{DynamicResource Warn}" FontSize="11.5" TextWrapping="Wrap" Margin="8,0,0,0" Visibility="Collapsed"/>
+                        </Grid>
+                    </Border>
+                    <Border Style="{StaticResource Banner}" Background="{DynamicResource Cont}" Visibility="{Binding Visibility, ElementName=SleepNote}">
+                        <Grid>
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                            <TextBlock Style="{StaticResource Glyph}" Text="&#xE708;" FontSize="13" VerticalAlignment="Top" Margin="0,1,0,0"/>
+                            <TextBlock x:Name="SleepNote" Grid.Column="1" Foreground="{DynamicResource Muted}" FontSize="11.5" TextWrapping="Wrap" Margin="8,0,0,0" Visibility="Collapsed"/>
+                        </Grid>
+                    </Border>
+                    <!-- The RAM: vong chia mau + chu thich -->
+                    <Border CornerRadius="12" Padding="10" Background="{DynamicResource Cont}" Margin="0,0,0,8">
+                        <Grid>
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                            <Grid Width="64" Height="64" VerticalAlignment="Center">
+                                <local:RamRingControl x:Name="RamRingView"/>
+                                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" IsHitTestVisible="False">
+                                    <TextBlock x:Name="RamRingNumber" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource Fg}" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="GB" FontSize="9" Foreground="{DynamicResource Muted}" HorizontalAlignment="Center" Margin="0,-1,0,0"/>
+                                </StackPanel>
+                            </Grid>
+                            <StackPanel Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center">
+                                <TextBlock x:Name="RamHead" Foreground="{DynamicResource Muted}" FontSize="11.5" TextTrimming="CharacterEllipsis" Margin="0,0,0,3"/>
+                                <StackPanel x:Name="RamLegendPanel"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                    <!-- Hang 2 nut: Ung ho tac gia | phien ban -->
+                    <Grid x:Name="FooterButtons" Margin="0,0,0,2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition x:Name="DonateCol" Width="3*"/>
+                            <ColumnDefinition Width="6"/>
+                            <ColumnDefinition x:Name="VersionCol" Width="2*"/>
+                        </Grid.ColumnDefinitions>
+                        <Button x:Name="DonateButton" Style="{StaticResource FooterPillButton}" Click="DonateCard_Click" ToolTip="{DynamicResource S.Donate.Title}">
+                            <Grid>
+                                <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                <TextBlock Style="{StaticResource Glyph}" Text="&#xEC32;" FontSize="14" Foreground="{DynamicResource Acc}"/>
+                                <TextBlock x:Name="DonateLabel" Grid.Column="1" Text="{DynamicResource S.Donate.Title}" Margin="6,0,0,0" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
+                            </Grid>
+                        </Button>
+                        <Button x:Name="VersionButton" Grid.Column="2" Style="{StaticResource FooterOutlineButton}" Click="AboutRow_Click" ToolTip="{DynamicResource S.Footer.VersionTip}">
+                            <Grid>
+                                <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                <TextBlock Style="{StaticResource Glyph}" Text="&#xE946;" FontSize="13"/>
+                                <TextBlock x:Name="VersionLabel" Grid.Column="1" Margin="6,0,0,0" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
+                            </Grid>
+                        </Button>
+                    </Grid>
+                </StackPanel>
+                <StackPanel x:Name="MiniPanel" Visibility="Collapsed" HorizontalAlignment="Center">
+                    <TextBlock x:Name="TotalMini" HorizontalAlignment="Center" FontSize="11" Foreground="{DynamicResource Muted}" Margin="0,0,0,6"/>
+                    <Button x:Name="MiniDonate" Style="{StaticResource RoundIconButton}" Background="{DynamicResource Sec}" Margin="0,0,0,4" Click="DonateCard_Click" ToolTip="{DynamicResource S.Donate.Title}">
+                        <TextBlock Style="{StaticResource Glyph}" Text="&#xEC32;" FontSize="15" Foreground="{DynamicResource Acc}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Button>
+                    <Button x:Name="MiniAbout" Style="{StaticResource RoundIconButton}" Click="AboutRow_Click">
+                        <TextBlock Style="{StaticResource Glyph}" Text="&#xE946;" FontSize="15" Foreground="{DynamicResource Fg}"/>
+                    </Button>
+                </StackPanel>
+            </StackPanel>
+            <ListBox x:Name="AccountList" Background="Transparent" Foreground="{DynamicResource Fg}" BorderThickness="0" HorizontalContentAlignment="Stretch"
+                     Padding="8,0" ItemContainerStyle="{StaticResource AccountItem}"
+                     AllowDrop="True" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                     SelectionChanged="AccountList_SelectionChanged"
+                     PreviewMouseRightButtonDown="AccountList_PreviewMouseRightButtonDown"
+                     PreviewMouseLeftButtonDown="AccountList_PreviewMouseLeftButtonDown"
+                     PreviewMouseMove="AccountList_PreviewMouseMove"
+                     PreviewMouseLeftButtonUp="AccountList_PreviewMouseLeftButtonUp"
+                     DragOver="AccountList_DragOver" Drop="AccountList_Drop">
+                <ListBox.Resources>
+                    <Style TargetType="ScrollBar" BasedOn="{StaticResource ThinScrollBar}"/>
+                </ListBox.Resources>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid ToolTip="{Binding ItemTip}" Background="Transparent">
+                            <!-- Che do rong: the -->
+                            <Border Style="{StaticResource AccountCard}" Visibility="{Binding FullVisibility}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid Grid.RowSpan="2" Width="36" Height="36" Margin="0,0,10,0" VerticalAlignment="Center" Style="{StaticResource AvatarDim}">
+                                        <Ellipse Fill="{Binding AvatarBrush}"/>
+                                        <Ellipse Fill="{Binding AvatarImageBrush}" Visibility="{Binding AvatarImageVisibility}"/>
+                                        <TextBlock Text="{Binding Initial}" Visibility="{Binding InitialVisibility}" Foreground="White" FontWeight="Bold" FontSize="15"
+                                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Grid>
+                                    <Grid Grid.Column="1">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="{Binding DisplayName}" FontSize="14" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"
+                                                   Foreground="{DynamicResource Fg}" VerticalAlignment="Center"/>
+                                        <Border Grid.Column="1" MinWidth="18" Height="18" CornerRadius="9" Padding="4,0" Margin="6,0,0,0" VerticalAlignment="Center"
+                                                Background="{DynamicResource Badge}" Visibility="{Binding UnreadNumberVisibility}"
+                                                ToolTip="{DynamicResource S.Tip.Unread}">
+                                            <TextBlock Text="{Binding UnreadCountText}" Foreground="{DynamicResource Surf}" FontSize="11" FontWeight="Bold"
+                                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                        <Ellipse Grid.Column="1" Width="8" Height="8" Margin="6,0,5,0" VerticalAlignment="Center" Fill="{DynamicResource Badge}"
+                                                 Visibility="{Binding UnreadDotVisibility}" ToolTip="{DynamicResource S.Tip.Unread}"/>
+                                    </Grid>
+                                    <Grid Grid.Row="1" Grid.Column="1" Margin="0,3,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Border Style="{StaticResource ChipBorder}">
+                                                <TextBlock Style="{StaticResource ChipText}" Text="{Binding StateText}"/>
+                                            </Border>
+                                            <Border Style="{StaticResource KindTag}" Visibility="{Binding KindVisibility}">
+                                                <TextBlock Style="{StaticResource KindTagText}" Text="{Binding KindText}"/>
+                                            </Border>
+                                        </StackPanel>
+                                        <TextBlock Grid.Column="1" Style="{StaticResource NoteText}" Text="{Binding NoteText}"
+                                                   Visibility="{Binding WideDetailVisibility}"/>
+                                        <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                                            <Border Style="{StaticResource FlagBoxWarn}" Visibility="{Binding NeedsUpdate, Converter={StaticResource B2V}}"
+                                                    ToolTip="{DynamicResource S.Tip.OldZalo}">
+                                                <TextBlock Style="{StaticResource Glyph}" Text="&#xE895;" FontSize="12" Foreground="{DynamicResource Warn}"/>
+                                            </Border>
+                                            <Border Style="{StaticResource FlagBox}" Visibility="{Binding Pinned, Converter={StaticResource B2V}}"
+                                                    ToolTip="{DynamicResource S.Tip.Pinned}">
+                                                <TextBlock Style="{StaticResource Glyph}" Text="&#xE718;" FontSize="12"/>
+                                            </Border>
+                                            <Border Style="{StaticResource FlagBox}" Visibility="{Binding IsCallOwner, Converter={StaticResource B2V}}"
+                                                    ToolTip="{DynamicResource S.Tip.CallOwner}">
+                                                <TextBlock Style="{StaticResource Glyph}" Text="&#xE717;" FontSize="12"/>
+                                            </Border>
+                                            <Border Style="{StaticResource FlagBox}" Visibility="{Binding IsCaptureOwner, Converter={StaticResource B2V}}"
+                                                    Opacity="{Binding CaptureOpacity}" ToolTip="{Binding CaptureTip}">
+                                                <TextBlock Style="{StaticResource Glyph}" Text="&#xE722;" FontSize="12"/>
+                                            </Border>
+                                        </StackPanel>
+                                    </Grid>
+                                </Grid>
+                            </Border>
+                            <!-- Che do thu gon: o 44x44 -->
+                            <Border Style="{StaticResource AccountCell}" Visibility="{Binding NarrowVisibility}">
+                                <Grid>
+                                    <Grid Width="34" Height="34" Style="{StaticResource AvatarDim}">
+                                        <Ellipse Fill="{Binding AvatarBrush}"/>
+                                        <Ellipse Fill="{Binding AvatarImageBrush}" Visibility="{Binding AvatarImageVisibility}"/>
+                                        <TextBlock Text="{Binding Initial}" Visibility="{Binding InitialVisibility}" Foreground="White" FontWeight="Bold" FontSize="14"
+                                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Grid>
+                                    <Ellipse Width="42" Height="42" Style="{StaticResource StateRing}"/>
+                                    <Border MinWidth="16" Height="16" CornerRadius="8" Padding="3,0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-3,-4,0"
+                                            Background="{DynamicResource Badge}" Visibility="{Binding UnreadNumberVisibility}"
+                                            ToolTip="{DynamicResource S.Tip.Unread}">
+                                        <TextBlock Text="{Binding UnreadCountText}" Foreground="{DynamicResource Surf}" FontSize="10" FontWeight="Bold"
+                                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                    <Ellipse Width="9" Height="9" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,0,0"
+                                             Fill="{DynamicResource Badge}" Stroke="{DynamicResource Bg}" StrokeThickness="1.5"
+                                             Visibility="{Binding UnreadDotVisibility}" ToolTip="{DynamicResource S.Tip.Unread}"/>
+                                    <Border HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,-3" Padding="3,0" CornerRadius="6"
+                                            Background="{DynamicResource Surf}" BorderBrush="{DynamicResource Line}" BorderThickness="1"
+                                            Visibility="{Binding HasFlags, Converter={StaticResource B2V}}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Style="{StaticResource Glyph}" Text="&#xE895;" FontSize="10" Foreground="{DynamicResource Warn}"
+                                                       Visibility="{Binding NeedsUpdate, Converter={StaticResource B2V}}"/>
+                                            <TextBlock Style="{StaticResource Glyph}" Text="&#xE718;" FontSize="10" Visibility="{Binding Pinned, Converter={StaticResource B2V}}"/>
+                                            <TextBlock Style="{StaticResource Glyph}" Text="&#xE717;" FontSize="10" Visibility="{Binding IsCallOwner, Converter={StaticResource B2V}}"/>
+                                            <TextBlock Style="{StaticResource Glyph}" Text="&#xE722;" FontSize="10" Opacity="{Binding CaptureOpacity}"
+                                                       Visibility="{Binding IsCaptureOwner, Converter={StaticResource B2V}}"/>
+                                        </StackPanel>
+                                    </Border>
+                                </Grid>
+                            </Border>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </DockPanel>
+        </Border>
+        <GridSplitter x:Name="SidebarSplitter" Grid.Column="0" Width="8" HorizontalAlignment="Right" VerticalAlignment="Stretch"
+                      ResizeDirection="Columns" ResizeBehavior="CurrentAndNext" Cursor="SizeWE" Background="Transparent"
+                      ShowsPreview="False" Panel.ZIndex="5" DragCompleted="SidebarSplitter_DragCompleted"/>
+
+        <!-- Vung hien thi Zalo. Khong padding: kich thuoc = vung dan cua so. -->
+        <Grid Grid.Column="1">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="52"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Thanh lenh co dinh 52 DIP (luon hien de chieu cao Host khong doi). -->
+        <Border x:Name="CommandBar" Grid.Row="0" Background="{DynamicResource Bg}" BorderBrush="{DynamicResource Line}" BorderThickness="0,0,0,1"
+                Padding="16,0,10,0" ClipToBounds="True">
+        <DockPanel LastChildFill="True">
+            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
+                <Border Width="1" Height="24" Background="{DynamicResource Line}" Margin="0,0,10,0"/>
+                <Button x:Name="LockButton" Style="{StaticResource RoundIconButton}" Click="LockButton_Click" ToolTip="{DynamicResource S.Cmd.Lock}">
+                    <TextBlock Style="{StaticResource Glyph}" Text="&#xE72E;" FontSize="15" Foreground="{DynamicResource Fg}"/>
+                </Button>
+                <Button x:Name="SettingsButton" Style="{StaticResource RoundIconButton}" Margin="10,0,0,0" Click="SettingsButton_Click" ToolTip="{DynamicResource S.Cmd.Settings}">
+                    <TextBlock Style="{StaticResource Glyph}" Text="&#xE713;" FontSize="15" Foreground="{DynamicResource Fg}"/>
+                </Button>
+            </StackPanel>
+            <DockPanel x:Name="AccountBar" LastChildFill="True" Visibility="Collapsed">
+                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center" Margin="10,0,10,0">
+                    <Button x:Name="BtnStart" Style="{StaticResource CmdButton}" Margin="10,0,0,0" Click="BtnStart_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource Glyph}" Text="&#xE768;" FontSize="14" Foreground="{DynamicResource Fg}"/>
+                            <TextBlock x:Name="BtnStartText" Text="{DynamicResource S.Cmd.Start}" Margin="8,0,0,0" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button x:Name="BtnSleep" Style="{StaticResource CmdButton}" Margin="10,0,0,0" Click="BtnSleep_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource Glyph}" Text="&#xE708;" FontSize="14" Foreground="{DynamicResource Fg}"/>
+                            <TextBlock x:Name="BtnSleepText" Text="{DynamicResource S.Cmd.Sleep}" Margin="8,0,0,0" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button x:Name="BtnRestart" Style="{StaticResource CmdButton}" Margin="10,0,0,0" Click="BtnRestart_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock x:Name="BtnRestartGlyph" Style="{StaticResource Glyph}" Text="&#xE72C;" FontSize="14" Foreground="{DynamicResource Fg}"/>
+                            <TextBlock x:Name="BtnRestartText" Text="{DynamicResource S.Cmd.Restart}" Margin="8,0,0,0" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button x:Name="BtnReattach" Style="{StaticResource CmdButton}" Margin="10,0,0,0" Click="BtnReattach_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource Glyph}" Text="&#xE71B;" FontSize="14" Foreground="{DynamicResource Fg}"/>
+                            <TextBlock x:Name="BtnReattachText" Text="{DynamicResource S.Cmd.Reattach}" Margin="8,0,0,0" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button x:Name="BtnMore" Style="{StaticResource RoundIconButton}" Margin="10,0,0,0" Click="BtnMore_Click" ToolTip="{DynamicResource S.Cmd.More}">
+                        <TextBlock Style="{StaticResource Glyph}" Text="&#xE712;" FontSize="15" Foreground="{DynamicResource Fg}"/>
+                    </Button>
+                </StackPanel>
+                <StackPanel x:Name="AccountLeft" Orientation="Horizontal" VerticalAlignment="Center" ClipToBounds="True">
+                    <Grid Width="30" Height="30">
+                        <Ellipse Fill="{Binding AvatarBrush}"/>
+                                        <Ellipse Fill="{Binding AvatarImageBrush}" Visibility="{Binding AvatarImageVisibility}"/>
+                        <TextBlock Text="{Binding Initial}" Visibility="{Binding InitialVisibility}" Foreground="White" FontWeight="Bold" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Grid>
+                    <TextBlock x:Name="AccountName" Text="{Binding DisplayName}" Margin="10,0,0,0" FontSize="15" FontWeight="Bold" Foreground="{DynamicResource Fg}"
+                               TextTrimming="CharacterEllipsis" VerticalAlignment="Center" MaxWidth="240"/>
+                    <Border Style="{StaticResource ChipBorder}" Margin="10,0,0,0" Padding="8,3">
+                        <TextBlock Style="{StaticResource ChipText}" Text="{Binding StateText}"/>
+                    </Border>
+                    <StackPanel x:Name="FlagChips" Orientation="Horizontal">
+                        <Border Style="{StaticResource OutChip}" ToolTip="{DynamicResource S.Tip.CallOwner}" Visibility="{Binding IsCallOwner, Converter={StaticResource B2V}}">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Style="{StaticResource Glyph}" Text="&#xE717;" FontSize="13"/>
+                                <TextBlock x:Name="ChipCallText" Text="{DynamicResource S.Chip.Call}" Margin="6,0,0,0" FontSize="12" Foreground="{DynamicResource Muted}" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                        <Border ToolTip="{Binding CaptureTip}">
+                            <Border.Style>
+                                <Style TargetType="Border" BasedOn="{StaticResource OutChip}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding IsCaptureOwner}" Value="True"/>
+                                                <Condition Binding="{Binding CaptureActive}" Value="True"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </MultiDataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Style="{StaticResource Glyph}" Text="&#xE722;" FontSize="13"/>
+                                <TextBlock x:Name="ChipCapText" Text="{DynamicResource S.Chip.Cap}" Margin="6,0,0,0" FontSize="12" Foreground="{DynamicResource Muted}" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                        <Grid ToolTip="{Binding CaptureTip}" Opacity="0.7">
+                            <Grid.Style>
+                                <Style TargetType="Grid">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding IsCaptureOwner}" Value="True"/>
+                                                <Condition Binding="{Binding CaptureActive}" Value="False"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </MultiDataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Grid.Style>
+                            <Border Style="{StaticResource OutChip}" BorderBrush="Transparent">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Style="{StaticResource Glyph}" Text="&#xE722;" FontSize="13"/>
+                                    <TextBlock x:Name="ChipCapOffText" Text="{DynamicResource S.Chip.CapOff}" Margin="6,0,0,0" FontSize="12" Foreground="{DynamicResource Muted}" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Border>
+                            <Rectangle Height="26" Margin="6,0,0,0" RadiusX="8" RadiusY="8" Stroke="{DynamicResource Line}" StrokeDashArray="3 2" StrokeThickness="1"
+                                       VerticalAlignment="Center" IsHitTestVisible="False"/>
+                        </Grid>
+                        <Border Style="{StaticResource OutChip}" BorderBrush="{DynamicResource Warn}" ToolTip="{DynamicResource S.Tip.OldZalo}"
+                                Visibility="{Binding NeedsUpdate, Converter={StaticResource B2V}}">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Style="{StaticResource Glyph}" Text="&#xE895;" FontSize="13" Foreground="{DynamicResource Warn}"/>
+                                <TextBlock x:Name="ChipOldText" Text="{DynamicResource S.Chip.Old}" Margin="6,0,0,0" FontSize="12" Foreground="{DynamicResource Warn}" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                        <Border Style="{StaticResource OutChip}" ToolTip="{DynamicResource S.Tip.Pinned}" Visibility="{Binding Pinned, Converter={StaticResource B2V}}">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Style="{StaticResource Glyph}" Text="&#xE718;" FontSize="13"/>
+                                <TextBlock x:Name="ChipPinText" Text="{DynamicResource S.Chip.Pin}" Margin="6,0,0,0" FontSize="12" Foreground="{DynamicResource Muted}" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </StackPanel>
+            </DockPanel>
+        </DockPanel>
+        </Border>
+
+        <Border x:Name="Host" Grid.Row="1" Background="{DynamicResource HostBg}" SizeChanged="Host_SizeChanged">
+            <Grid>
+                <StackPanel x:Name="InfoPanel" HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="420">
+                    <TextBlock x:Name="InfoTitle" FontSize="20" FontWeight="SemiBold" Foreground="{DynamicResource Fg}" TextAlignment="Center" TextWrapping="Wrap"/>
+                    <TextBlock x:Name="InfoDetail" Margin="0,8,0,12" Foreground="{DynamicResource Muted}" TextAlignment="Center" TextWrapping="Wrap"/>
+                    <Button x:Name="InfoStartButton" Content="{DynamicResource S.Cmd.Start}" Style="{StaticResource PillButton}" Padding="28,0" HorizontalAlignment="Center" Click="InfoStartButton_Click"/>
+                </StackPanel>
+                <!-- Zalo Web: moi tai khoan mot WebView2 (HWND con, airspace: luon nam tren cac phan tu WPF). An khi khoa/thu nho. -->
+                <Grid x:Name="WebLayer"/>
+            </Grid>
+        </Border>
+        </Grid>
+    </Grid>
+
+    <!-- Man hinh khoa: che toan bo cua so (ca sidebar). -->
+    <Border x:Name="LockOverlay" Background="{DynamicResource Bg}" Visibility="Collapsed" Panel.ZIndex="100">
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Width="280">
+            <Border Width="88" Height="88" CornerRadius="44" Background="{DynamicResource Sec}" HorizontalAlignment="Center">
+                <TextBlock Style="{StaticResource Glyph}" Text="&#xE72E;" FontSize="40" Foreground="{DynamicResource SecFg}"/>
+            </Border>
+            <TextBlock Text="{DynamicResource S.Lock.Title}" FontSize="22" FontWeight="SemiBold" Foreground="{DynamicResource Fg}" HorizontalAlignment="Center" Margin="0,16,0,20"/>
+            <PasswordBox x:Name="LockPassword" KeyDown="LockPassword_KeyDown"/>
+            <Button x:Name="UnlockButton" Content="{DynamicResource S.Lock.Unlock}" Style="{StaticResource DlgPrimaryButton}" Height="36" Margin="0,10,0,0" Click="UnlockButton_Click"/>
+            <TextBlock x:Name="LockError" Foreground="{DynamicResource Err}" TextWrapping="Wrap" TextAlignment="Center" Margin="0,10,0,0"/>
+        </StackPanel>
+    </Border>
+    </Grid>
+</Window>
+
+

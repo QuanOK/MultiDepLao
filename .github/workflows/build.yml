@@ -1,0 +1,99 @@
+name: build
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Test
+        run: dotnet test MultiDepLao.sln -c Release
+
+  release:
+    # Chi chay khi day tag v*; can test xanh truoc.
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: test
+    runs-on: windows-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Verify tag matches csproj version
+        shell: pwsh
+        run: |
+          [xml]$xml = Get-Content -LiteralPath src/MultiDepLao.App/MultiDepLao.App.csproj -Raw
+          $ver = ($xml.Project.PropertyGroup | ForEach-Object { $_.Version } | Where-Object { $_ } | Select-Object -First 1)
+          if (-not $ver) { throw 'Khong tim thay <Version> trong csproj.' }
+          $tag = '${{ github.ref_name }}'
+          if ($tag -ne "v$ver") { throw "Tag $tag khong khop version csproj v$ver" }
+          "VERSION=$ver" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+
+      - name: Install Inno Setup
+        shell: pwsh
+        run: choco install innosetup -y --no-progress
+
+      - name: Package
+        shell: pwsh
+        run: |
+          $iscc = Join-Path ${env:ProgramFiles(x86)} 'Inno Setup 6\ISCC.exe'
+          if (-not (Test-Path -LiteralPath $iscc)) { throw "Khong thay ISCC.exe tai $iscc" }
+          & powershell -NoProfile -ExecutionPolicy Bypass -File build\package.ps1 -Iscc $iscc
+          if ($LASTEXITCODE -ne 0) { throw "package.ps1 loi (exit $LASTEXITCODE)" }
+
+      - name: Collect files
+        id: files
+        shell: pwsh
+        run: |
+          $rel = "dist\release-$env:VERSION"
+          $setup = Join-Path $rel "ban-cai-dat\MultiDepLao-$env:VERSION-setup-win-x64.exe"
+          $zip = Join-Path $rel "ban-portable\MultiDepLao-$env:VERSION-portable-win-x64.zip"
+          foreach ($f in @($setup, $zip)) { if (-not (Test-Path -LiteralPath $f)) { throw "Thieu $f" } }
+          "SETUP=$setup" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+          "ZIP=$zip" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: MultiDepLao-${{ github.ref_name }}
+          path: |
+            ${{ env.SETUP }}
+            ${{ env.ZIP }}
+          if-no-files-found: error
+
+      - name: Create GitHub Release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          $hs = (Get-FileHash -LiteralPath $env:SETUP -Algorithm SHA256).Hash.ToLowerInvariant()
+          $hz = (Get-FileHash -LiteralPath $env:ZIP -Algorithm SHA256).Hash.ToLowerInvariant()
+          $notes = @(
+            "Multi DepLao $env:VERSION",
+            "",
+            "SHA-256:",
+            "- $(Split-Path $env:SETUP -Leaf): $hs",
+            "- $(Split-Path $env:ZIP -Leaf): $hz",
+            "",
+            "Luu y: cac ban build hien chua duoc ky so (unsigned), Windows SmartScreen co the canh bao. / Builds are currently unsigned."
+          ) -join "`n"
+          $notesFile = Join-Path $env:RUNNER_TEMP 'notes.md'
+          [IO.File]::WriteAllText($notesFile, $notes, (New-Object Text.UTF8Encoding $false))
+          gh release create '${{ github.ref_name }}' $env:SETUP $env:ZIP --title "Multi DépLào $env:VERSION" --notes-file $notesFile
+          if ($LASTEXITCODE -ne 0) { throw "gh release create loi (exit $LASTEXITCODE)" }

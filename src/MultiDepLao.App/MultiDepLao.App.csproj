@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\MultiDepLao.Core\MultiDepLao.Core.csproj" />
+    <ProjectReference Include="..\MultiDepLao.Win32\MultiDepLao.Win32.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Zalo Web trong WebView2 (0.4.0). -->
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.4314.35" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>Assets\app.ico</ApplicationIcon>
+    <Version>0.4.7</Version>
+    <!-- Chi giu tai nguyen tieng Anh (mac dinh, nam san trong DLL) cua .NET/WPF; bo cs, de, ja... (~16 MB). Giao dien
+         Viet/Anh cua app nam trong bang chuoi rieng (Loc), khong dung satellite assembly. -->
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    <!-- Khong chep file tai lieu IntelliSense (*.xml) cua goi WebView2 vao ban publish (~0,8 MB, luc chay khong dung). -->
+    <PublishReferencesDocumentationFiles>false</PublishReferencesDocumentationFiles>
+    <Authors>QuânOK</Authors>
+    <Company>QuânOK</Company>
+    <Copyright>Copyright © 2026 QuânOK</Copyright>
+    <Product>Multi DépLào</Product>
+    <AssemblyTitle>Multi DépLào</AssemblyTitle>
+    <!-- Khong dung WinForms (khay = Shell_NotifyIconW trong TrayController); WPF can dpiAwareness PerMonitorV2 trong app.manifest. -->
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Logo (phuong an B "Doi dep"): 16..256 px; tao bang cong cu ve WPF, anh nguon docs/ui-mockups/logo.html -->
+    <Resource Include="Assets\app.ico" />
+    <Resource Include="Assets\donate-qr.png" />
+  </ItemGroup>
+
+
+</Project>

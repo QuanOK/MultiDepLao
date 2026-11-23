@@ -1,0 +1,123 @@
+﻿MULTI DÉPLÀO – HƯỚNG DẪN NHANH (bản thử nghiệm)
+================================================
+
+Multi DépLào giúp mở nhiều tài khoản Zalo PC cùng lúc trong một cửa sổ: danh sách tài khoản bên trái,
+Zalo của tài khoản đang chọn bên phải. Mỗi tài khoản có dữ liệu riêng, đăng nhập một lần là nhớ.
+
+1. YÊU CẦU
+----------
+- Windows 10 hoặc 11, bản 64-bit.
+- Đã cài Zalo PC bản chính thức (tải ở https://zalo.me/pc) và mở được bình thường.
+- Không cần quyền quản trị (admin).
+- Chỉ tải Multi DépLào từ trang chính thức: https://github.com/QuanOK/MultiDepLao/releases
+  Bản tải ở nơi khác có thể đã bị sửa đổi. Trên trang có mã SHA-256 của từng file để đối chiếu
+  (PowerShell: Get-FileHash <tên file>).
+
+2. CÀI ĐẶT
+----------
+Cách A – Bản cài đặt (MultiDepLao-<phiên bản>-setup-win-x64.exe):
+  - Chạy file setup, bấm Next đến hết. App cài vào %LOCALAPPDATA%\Programs\MultiDepLao,
+    có biểu tượng trong Start Menu (tùy chọn thêm ngoài Desktop).
+
+Cách B – Bản portable (MultiDepLao-<phiên bản>-portable-win-x64.zip):
+  - Bấm chuột phải file zip → "Extract All..." (Giải nén tất cả) vào một thư mục bạn có quyền ghi,
+    ví dụ Tài liệu hoặc Desktop. KHÔNG đặt trong C:\Program Files.
+  - Mở thư mục MultiDepLao vừa giải nén, chạy MultiDepLao.App.exe.
+  - Không chạy thẳng từ trong file zip (phải giải nén trước).
+
+Lần đầu mở app có thể mất 20–30 giây mới hiện cửa sổ (Windows kiểm tra virus file lần đầu chạy).
+Hãy chờ, đừng bấm mở lại nhiều lần. Từ lần sau app mở trong khoảng 1–2 giây.
+
+Cảnh báo "Windows protected your PC" (SmartScreen):
+  App chưa được ký số nên Windows có thể hiện cảnh báo này lần đầu chạy.
+  Bấm "More info" (Thông tin thêm) → "Run anyway" (Vẫn chạy).
+
+3. SỬ DỤNG
+----------
+- Bấm "Thêm tài khoản", đặt tên, rồi đăng nhập Zalo (quét mã QR) trong vùng bên phải.
+- Bấm tên tài khoản bên trái để chuyển qua lại. Chuột phải vào tài khoản để có thêm lựa chọn.
+- Chỉ mở một Multi DépLào tại một thời điểm.
+- Khởi động cùng Windows: Cài đặt → bật "Khởi động cùng Windows". App sẽ tự mở khi bạn đăng nhập
+  Windows. Tắt lại ở cùng chỗ đó.
+  Nếu Zalo (bản cài bình thường) cũng tự mở cùng Windows, nó có thể giành quyền gọi điện của tài khoản trong
+  app. Nên tắt Zalo trong Task Manager → Startup apps (Ứng dụng khởi động).
+- Xem phiên bản, tác giả, miễn trừ trách nhiệm: Cài đặt → "Giới thiệu & bản quyền", hoặc chuột phải biểu tượng
+  ở khay → "Giới thiệu".
+- Xem thay đổi của từng phiên bản: Cài đặt → "Có gì mới" (hoặc trong Giới thiệu, hoặc chuột phải biểu tượng ở khay).
+  Hộp thoại tự hiện một lần sau khi cập nhật.
+
+  ZALO PC HAY ZALO WEB?
+  Khi bấm "Thêm tài khoản", bạn chọn một trong hai loại:
+  - Zalo PC: dùng Zalo cài trên máy, đầy đủ tính năng, gọi thoại/video được (ở một tài khoản). Tốn khoảng 1 GB RAM
+    mỗi tài khoản.
+  - Zalo Web: chạy Zalo trên trình duyệt có sẵn trong app, nhẹ hơn (khoảng 0,45 GB mỗi tài khoản thêm). Hợp khi mở
+    nhiều tài khoản. Đăng nhập bằng mã QR, lần sau vẫn nhớ. Nhưng KHÔNG gọi thoại/video được, không có nút chụp
+    màn hình của Zalo (dùng Win+Shift+S).
+  - Zalo Web cần thành phần WebView2 của Windows. Máy chưa có thì app tự hỏi trước khi cài, bạn đồng ý mới cài.
+  - Tài khoản Web có chấm báo tin mới và thông báo của Windows ("<tên> có tin nhắn mới", không hiện nội dung).
+    Nếu không thấy thông báo, kiểm tra Windows có đang bật "Không làm phiền" không.
+  - Thông báo kín cho tài khoản Zalo PC (không hiện nội dung tin): Cài đặt → bật "Thông báo kín cho tài khoản Zalo PC".
+    Multi DépLào sẽ báo "<tên> có N tin nhắn mới"; bấm vào thông báo để mở đúng tài khoản. Để Zalo không báo kèm
+    nội dung: Windows Settings → System (Hệ thống) → Notifications (Thông báo) → tắt "Zalo" (có nút mở nhanh ngay trong
+    Cài đặt của app). Khi bật Thông báo kín, popup tin nhắn của Zalo được giấu; bấm thông báo của Multi DépLào để
+    mở tài khoản. Thông báo trễ vài giây và không báo tin đã có sẵn lúc vừa mở tài khoản.
+  - Đã tạo rồi thì không đổi loại được; muốn đổi loại hãy tạo tài khoản mới.
+
+4. DỮ LIỆU NẰM Ở ĐÂU
+--------------------
+- Bản cài đặt: %LOCALAPPDATA%\MultiDepLao
+  (dán đường dẫn này vào thanh địa chỉ của File Explorer để mở).
+- Bản portable: thư mục "data" nằm cạnh MultiDepLao.App.exe.
+- Dữ liệu Zalo bạn đang dùng bình thường (ngoài app) không bị đụng tới.
+
+5. GỠ CÀI ĐẶT VÀ XÓA SẠCH DỮ LIỆU
+---------------------------------
+- Trước tiên thoát Multi DépLào (chuột phải biểu tượng ở khay → Thoát).
+- Nếu đã bật "Khởi động cùng Windows" ở bản portable: tắt nó trong Cài đặt TRƯỚC khi xóa thư mục.
+  (Bản cài đặt tự gỡ mục này khi Uninstall.)
+- Bản cài đặt: Settings → Apps → Installed apps → "Multi DépLào" → Uninstall.
+  Việc gỡ KHÔNG xóa dữ liệu tài khoản. Muốn xóa sạch: xóa thêm thư mục %LOCALAPPDATA%\MultiDepLao.
+- Bản portable: xóa cả thư mục MultiDepLao đã giải nén (dữ liệu nằm trong đó).
+- Khi có thông báo tin mới của tài khoản Zalo Web, app ghi một khóa đăng ký tên/biểu tượng thông báo tại
+  HKCU\Software\Classes\AppUserModelId\MultiDepLao. Bản cài đặt tự xóa khóa này khi Uninstall; bản portable thì
+  xóa tay khóa đó (nếu muốn) bằng regedit.
+- Xóa dữ liệu nghĩa là phải đăng nhập lại các tài khoản Zalo nếu dùng lại app.
+
+6. AN TOÀN VÀ RIÊNG TƯ
+----------------------
+- App KHÔNG đọc nội dung tin nhắn.
+- App KHÔNG gửi dữ liệu nào ra ngoài máy (không máy chủ trung gian, không thống kê sử dụng).
+- App KHÔNG sửa Zalo: chỉ chạy Zalo gốc với thư mục dữ liệu riêng cho từng tài khoản và sắp xếp cửa sổ.
+- App không tự gửi tin nhắn.
+- Chi tiết app lưu gì, ở đâu: file QUYEN-RIENG-TU.txt.
+
+7. ĐÂY LÀ BẢN THỬ NGHIỆM – GIỚI HẠN CHÍNH
+-----------------------------------------
+- Gọi thoại/video chỉ dùng được ở MỘT tài khoản tại một thời điểm (đổi bằng chuột phải tài khoản).
+  Cuộc gọi của tài khoản khác đổ về điện thoại.
+- Nút chụp màn hình của Zalo chỉ chạy ở MỘT tài khoản (chọn bằng chuột phải tài khoản).
+  Có thể dùng Win+Shift+S của Windows thay thế.
+- Mỗi tài khoản đã đăng nhập tốn khoảng 1,2–1,6 GB RAM. Máy 16 GB chạy thoải mái khoảng 5–6 tài khoản.
+- Màn hình cần cao tối thiểu khoảng 768 px; màn hình thấp có thể chật.
+- Không kéo được mép cửa sổ Zalo; muốn Zalo to hơn thì kéo cửa sổ Multi DépLào.
+- Có tài khoản Zalo không hiện popup báo tin trên PC (do phía Zalo); danh sách bên trái vẫn có chấm đỏ báo tin mới.
+- Khóa app bằng mật khẩu chỉ khóa giao diện; biểu tượng Zalo ở khay hệ thống vẫn hiện.
+- Khi Zalo cập nhật giao diện, một số tính năng (chấm đỏ tin mới) có thể tạm không chạy.
+
+8. MIỄN TRỪ TRÁCH NHIỆM
+-----------------------
+Phần mềm được cung cấp "nguyên trạng", không kèm bảo đảm nào; tác giả không chịu trách nhiệm về thiệt hại phát sinh
+khi sử dụng, kể cả mất dữ liệu hay tài khoản Zalo bị hạn chế. Multi DépLào là phần mềm độc lập, không phải sản phẩm
+chính thức và không liên kết với Zalo / VNG; "Zalo" là nhãn hiệu của chủ sở hữu tương ứng. Bạn tự chịu trách nhiệm
+tuân thủ điều khoản sử dụng của Zalo. Toàn văn: file MIEN-TRU-TRACH-NHIEM.txt.
+
+9. ỦNG HỘ TÁC GIẢ
+-----------------
+Multi DépLào miễn phí và không quảng cáo. Nếu thấy hữu ích, bạn có thể mời tác giả một ly cà phê:
+  Techcombank – O Kiem Quan – 7820 7088 88
+Mã QR chuyển khoản: trong app, bấm nút "Ủng hộ tác giả" ở đáy danh sách tài khoản (hoặc Cài đặt,
+hoặc chuột phải biểu tượng ở khay).
+
+Tác giả: QuânOK – okiemquan@gmail.com
+Gặp lỗi: gửi thư mục "logs" trong thư mục dữ liệu (mục 4) cho tác giả.
+Log chỉ ghi hoạt động của app, không có nội dung tin nhắn.

@@ -1,0 +1,30 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!-- Bang mau Dark (ban C1). Cung bo khoa voi file con lai; dung DynamicResource. -->
+    <SolidColorBrush x:Key="Bg" Color="#0F1513"/>
+    <SolidColorBrush x:Key="Surf" Color="#171E1C"/>
+    <SolidColorBrush x:Key="Cont" Color="#1D2522"/>
+    <SolidColorBrush x:Key="Cont2" Color="#27302D"/>
+    <SolidColorBrush x:Key="Fg" Color="#DEE4E1"/>
+    <SolidColorBrush x:Key="Muted" Color="#A9B5B1"/>
+    <SolidColorBrush x:Key="Line" Color="#3F4946"/>
+    <SolidColorBrush x:Key="Acc" Color="#82D5C6"/>
+    <SolidColorBrush x:Key="AccFg" Color="#00382F"/>
+    <SolidColorBrush x:Key="Sec" Color="#2F4A44"/>
+    <SolidColorBrush x:Key="SecFg" Color="#CDE8E1"/>
+    <SolidColorBrush x:Key="HostBg" Color="#0B100E"/>
+    <SolidColorBrush x:Key="Ok" Color="#8FDBAA"/>
+    <SolidColorBrush x:Key="OkBg" Color="#1D3A2A"/>
+    <SolidColorBrush x:Key="Warn" Color="#F5C46B"/>
+    <SolidColorBrush x:Key="WarnBg" Color="#3D2E0D"/>
+    <!-- Nhan loai tai khoan tren the: PC xanh duong, Web tim (nen dac de noi bat) -->
+    <SolidColorBrush x:Key="KindPcBg" Color="#1F3A63"/>
+    <SolidColorBrush x:Key="KindPcFg" Color="#A9CBFF"/>
+    <SolidColorBrush x:Key="KindWebBg" Color="#3A2857"/>
+    <SolidColorBrush x:Key="KindWebFg" Color="#D9BEFF"/>
+    <SolidColorBrush x:Key="Err" Color="#F2B8B5"/>
+    <SolidColorBrush x:Key="ErrBg" Color="#4A1E1B"/>
+    <SolidColorBrush x:Key="Off" Color="#A9B5B1"/>
+    <SolidColorBrush x:Key="OffBg" Color="#2A3330"/>
+    <SolidColorBrush x:Key="Badge" Color="#F2B8B5"/>
+</ResourceDictionary>

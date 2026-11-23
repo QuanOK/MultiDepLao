@@ -1,0 +1,49 @@
+﻿MULTI DÉPLÀO – QUYỀN RIÊNG TƯ
+=============================
+
+Tóm tắt: Multi DépLào không đọc tin nhắn của bạn, không gửi dữ liệu nào ra ngoài máy và chỉ lưu dữ liệu trên máy bạn.
+
+1. APP KHÔNG LÀM GÌ
+-------------------
+- KHÔNG đọc nội dung tin nhắn, tên người gửi hay tiêu đề cửa sổ Zalo. Để báo tin mới, app chỉ đọc con số trên chấm đỏ
+  của Zalo (ví dụ "3" hoặc "5+").
+- KHÔNG kết nối Internet: không máy chủ trung gian, không thu thập thống kê, không quảng cáo, không tự kiểm tra cập nhật.
+  Zalo bên trong app vẫn kết nối máy chủ Zalo như khi bạn dùng Zalo bình thường.
+- KHÔNG sửa Zalo, không chèn mã vào Zalo. App chạy chính Zalo bạn đã cài, mỗi tài khoản một thư mục dữ liệu riêng.
+- KHÔNG đụng dữ liệu Zalo bạn đang dùng ngoài app (%APPDATA%\ZaloData).
+- KHÔNG ghi lại phím bấm, KHÔNG chụp màn hình, KHÔNG đọc clipboard. App chỉ ghi vào clipboard khi bạn bấm "Sao chép
+  số tài khoản" trong mục Ủng hộ tác giả.
+- KHÔNG tự gửi tin nhắn.
+- KHÔNG cần quyền quản trị (admin).
+
+2. APP LƯU GÌ, Ở ĐÂU
+--------------------
+Mọi thứ nằm trên máy bạn:
+- Bản cài đặt: %LOCALAPPDATA%\MultiDepLao
+- Bản portable: thư mục "data" cạnh MultiDepLao.App.exe
+
+Bên trong gồm:
+- config.json: tên hiển thị và màu bạn đặt cho từng tài khoản, thứ tự, cài đặt của app.
+- profiles\: dữ liệu Zalo của từng tài khoản (do Zalo tạo, giống thư mục dữ liệu của Zalo thường).
+- zalo-nocap\, zalo-cap\: bản sao chương trình Zalo dùng để chạy các tài khoản (chỉ là chương trình, không có dữ liệu).
+- avatars\: ảnh đại diện bạn tự chọn cho tài khoản (nếu có).
+- logs\: nhật ký kỹ thuật (mã tài khoản như acc-01, trạng thái, lỗi). Không có nội dung tin nhắn.
+- app.lock: mật khẩu khóa app (nếu bạn đặt), lưu dạng băm một chiều (PBKDF2-SHA256 có salt), không lưu mật khẩu gốc.
+
+Khi bạn bật "Khởi động cùng Windows", app ghi một mục MultiDepLao vào
+HKCU\Software\Microsoft\Windows\CurrentVersion\Run (chỉ cho tài khoản Windows của bạn). Tắt tùy chọn này thì mục đó bị xóa.
+
+Khi có thông báo tin mới của tài khoản Zalo Web, app ghi một khóa HKCU\Software\Classes\AppUserModelId\MultiDepLao
+(tên hiển thị và đường dẫn biểu tượng thông báo, file toast-icon.png trong thư mục dữ liệu). Thông báo chỉ có
+"<tên tài khoản> có tin nhắn mới", không có nội dung tin. Bản cài đặt xóa khóa này khi gỡ.
+
+3. LƯU Ý
+--------
+- Khóa mật khẩu trong app chỉ che giao diện, không mã hóa dữ liệu trên đĩa. Ai dùng được tài khoản Windows của bạn vẫn
+  mở được các thư mục dữ liệu, giống Zalo thường. Hãy đặt mật khẩu cho Windows và khóa máy (Win+L) khi rời đi.
+- Khi gửi thư mục logs cho tác giả để báo lỗi, bạn có thể mở xem trước: đó là file chữ thường.
+- Xóa sạch dấu vết: gỡ app (hoặc xóa thư mục portable), rồi xóa thư mục dữ liệu ở mục 2.
+- Kiểm tra file tải về đúng bản gốc: so mã SHA256 của file với SHA256SUMS.txt đi kèm
+  (PowerShell: Get-FileHash <tên file>).
+
+Tác giả: QuânOK – okiemquan@gmail.com
