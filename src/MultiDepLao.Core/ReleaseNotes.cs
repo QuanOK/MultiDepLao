@@ -130,4 +130,52 @@ public static class ReleaseNotes
         if (!TryParse(lastSeen, out var seen)) return All;
         return All.Where(n => TryParse(n.Version, out var v) && v > seen).ToList();
     }
+
+    /// <summary>
+    /// Mo ta trang GitHub Release (Markdown): "Co gi moi" (vi + en), cach tai, SHA-256 tung file. Thieu ghi chu cho
+    /// phien ban -> loi (khong phat hanh khi quen viet Co gi moi). files: (ten file, sha256 hex).
+    /// </summary>
+    public static string ReleaseMarkdown(string version, IReadOnlyList<(string Name, string Sha256)> files, string releasesUrl)
+    {
+        var note = All.FirstOrDefault(n => n.Version == version)
+            ?? throw new InvalidOperationException($"ReleaseNotes chua co ghi chu cho {version}");
+        string? setup = files.Select(f => f.Name).FirstOrDefault(n => n.EndsWith("-setup-win-x64.exe", StringComparison.OrdinalIgnoreCase));
+        string? zip = files.Select(f => f.Name).FirstOrDefault(n => n.EndsWith("-portable-win-x64.zip", StringComparison.OrdinalIgnoreCase));
+        var sb = new System.Text.StringBuilder();
+        void L(string s = "") => sb.Append(s).Append('\n');
+
+        L("## Có gì mới");
+        foreach (var k in new[] { ReleaseKind.New, ReleaseKind.Changed, ReleaseKind.Fixed })
+            foreach (var i in note.Items.Where(i => i.Kind == k))
+                L($"- **{(k switch { ReleaseKind.New => "Mới", ReleaseKind.Changed => "Thay đổi", _ => "Sửa lỗi" })}:** {i.Vi}");
+        L();
+        L("## Tải về");
+        if (setup != null) L($"- **Bộ cài (khuyên dùng):** `{setup}`. Chạy rồi bấm Next; không cần quyền admin.");
+        if (zip != null) L($"- **Bản portable:** `{zip}`. Giải nén vào thư mục có quyền ghi (không phải Program Files) rồi chạy `MultiDepLao.App.exe`; dữ liệu nằm trong thư mục `data` cạnh exe.");
+        L("- Cần Windows 10/11 64-bit. Tài khoản loại Zalo PC cần đã cài [Zalo PC](https://zalo.me/pc).");
+        L();
+        L("## Kiểm tra file");
+        L($"Chỉ tải Multi DépLào tại [trang phát hành chính thức]({releasesUrl}). Đối chiếu mã SHA-256 trước khi chạy " +
+          "(PowerShell: `Get-FileHash <tên file>`); không trùng thì xóa file, không chạy.");
+        L();
+        L("| File | SHA-256 |");
+        L("|---|---|");
+        foreach (var f in files) L($"| `{f.Name}` | `{f.Sha256.ToLowerInvariant()}` |");
+        L();
+        L("Bản phát hành chưa ký số nên Windows SmartScreen có thể cảnh báo lần đầu chạy: bấm **More info** → **Run anyway**.");
+        L();
+        L("<details><summary>English</summary>");
+        L();
+        L("**What's new**");
+        L();
+        foreach (var k in new[] { ReleaseKind.New, ReleaseKind.Changed, ReleaseKind.Fixed })
+            foreach (var i in note.Items.Where(i => i.Kind == k))
+                L($"- **{(k switch { ReleaseKind.New => "New", ReleaseKind.Changed => "Changed", _ => "Fixed" })}:** {(i.En.Length > 0 ? i.En : i.Vi)}");
+        L();
+        L("Use the setup (recommended) or the portable zip; Windows 10/11 x64. Verify the SHA-256 above before running.");
+        L("Builds are not code-signed yet, so SmartScreen may warn on first run (More info → Run anyway).");
+        L();
+        L("</details>");
+        return sb.ToString();
+    }
 }

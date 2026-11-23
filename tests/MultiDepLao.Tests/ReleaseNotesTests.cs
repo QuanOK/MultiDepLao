@@ -28,6 +28,29 @@ public sealed class ReleaseNotesTests
     }
 
     [Fact]
+    public void ReleaseMarkdown_HasNotesDownloadsAndHashes()
+    {
+        var md = ReleaseNotes.ReleaseMarkdown("0.4.8",
+            new[] { ("MultiDepLao-0.4.8-setup-win-x64.exe", "ABC123"), ("MultiDepLao-0.4.8-portable-win-x64.zip", "def456") },
+            AppInfo.ReleasesUrl);
+        Assert.Contains("## Có gì mới", md);
+        Assert.Contains("- **Mới:** Mã nguồn mở", md);
+        Assert.Contains("- **Thay đổi:**", md);
+        Assert.Contains("- **Sửa lỗi:**", md);
+        Assert.Contains("`MultiDepLao-0.4.8-setup-win-x64.exe` | `abc123`", md);
+        Assert.Contains("`MultiDepLao-0.4.8-portable-win-x64.zip` | `def456`", md);
+        Assert.Contains("Bộ cài (khuyên dùng)", md);
+        Assert.Contains("Bản portable", md);
+        Assert.Contains(AppInfo.ReleasesUrl, md);
+        Assert.Contains("- **New:** Now open source", md);
+        Assert.DoesNotContain("\r", md);
+    }
+
+    [Fact]
+    public void ReleaseMarkdown_MissingVersion_Throws() =>
+        Assert.Throws<InvalidOperationException>(() => ReleaseNotes.ReleaseMarkdown("9.9.9", Array.Empty<(string, string)>(), AppInfo.ReleasesUrl));
+
+    [Fact]
     public void Data_IsSane()
     {
         var vs = ReleaseNotes.All.Select(n => Version.Parse(n.Version)).ToList();

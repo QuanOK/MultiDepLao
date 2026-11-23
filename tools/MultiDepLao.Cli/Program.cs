@@ -1,6 +1,20 @@
 ﻿using MultiDepLao.Core;
 
 // Cong cu kiem tra tay. list/status/verify CHI DOC (khong ghi dia). start/stop/ensure-copy thao tac that.
+// release-notes <version> <out.md> <file>...: tao mo ta GitHub Release (CI dung); khong dung toi du lieu app.
+if (args.Length > 0 && args[0].Equals("release-notes", StringComparison.OrdinalIgnoreCase))
+{
+    if (args.Length < 4) { Console.Error.WriteLine("release-notes <version> <out.md> <file>..."); return 2; }
+    var files = args.Skip(3).Select(f =>
+    {
+        using var s = File.OpenRead(f);
+        return (Path.GetFileName(f), Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(s)));
+    }).ToList();
+    File.WriteAllText(args[2], ReleaseNotes.ReleaseMarkdown(args[1], files, AppInfo.ReleasesUrl), new System.Text.UTF8Encoding(false));
+    Console.WriteLine($"Da ghi {args[2]}");
+    return 0;
+}
+
 var paths = new AppPaths();
 var probe = new WinProcessProbe();
 var gate = new SafetyGate(paths, probe);

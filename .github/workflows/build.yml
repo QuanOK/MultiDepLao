@@ -82,18 +82,9 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          $hs = (Get-FileHash -LiteralPath $env:SETUP -Algorithm SHA256).Hash.ToLowerInvariant()
-          $hz = (Get-FileHash -LiteralPath $env:ZIP -Algorithm SHA256).Hash.ToLowerInvariant()
-          $notes = @(
-            "Multi DepLao $env:VERSION",
-            "",
-            "SHA-256:",
-            "- $(Split-Path $env:SETUP -Leaf): $hs",
-            "- $(Split-Path $env:ZIP -Leaf): $hz",
-            "",
-            "Luu y: cac ban build hien chua duoc ky so (unsigned), Windows SmartScreen co the canh bao. / Builds are currently unsigned."
-          ) -join "`n"
+          # Mo ta lay tu ReleaseNotes.cs (Co gi moi) + SHA-256 tinh lai tu file; thieu ghi chu cho phien ban -> loi.
           $notesFile = Join-Path $env:RUNNER_TEMP 'notes.md'
-          [IO.File]::WriteAllText($notesFile, $notes, (New-Object Text.UTF8Encoding $false))
+          dotnet run --project tools/MultiDepLao.Cli -c Release -- release-notes $env:VERSION $notesFile $env:SETUP $env:ZIP
+          if ($LASTEXITCODE -ne 0) { throw "release-notes loi (exit $LASTEXITCODE)" }
           gh release create '${{ github.ref_name }}' $env:SETUP $env:ZIP --title "Multi DépLào $env:VERSION" --notes-file $notesFile
           if ($LASTEXITCODE -ne 0) { throw "gh release create loi (exit $LASTEXITCODE)" }
