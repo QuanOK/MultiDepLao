@@ -99,30 +99,18 @@ powershell -File build\publish.ps1   # ra dist\MultiDepLao-<phiên bản>\ và f
 
 Script publish tạo bản self-contained win-x64 single-file (ReadyToRun, không trimming), không cần admin.
 
-## Phát hành
-Cần thêm Inno Setup 6 (`winget install JRSoftware.InnoSetup --scope user`, không cần admin).
+## Đóng gói
+Bản chính thức trên [trang phát hành](https://github.com/QuanOK/MultiDepLao/releases) do GitHub Actions build khi đẩy tag
+`v<phiên bản>` (`.github/workflows/build.yml`). Tự đóng gói trên máy: cần thêm Inno Setup 6
+(`winget install JRSoftware.InnoSetup --scope user`, không cần admin), rồi
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File build\package.ps1   # thêm -Force để làm lại cùng phiên bản
 ```
 
-Phiên bản lấy từ `<Version>` trong `src\MultiDepLao.App\MultiDepLao.App.csproj`. Kết quả trong `dist\release-<phiên bản>\`,
-mỗi thư mục con là đúng thứ cần gửi:
-- `ban-cai-dat\`: `MultiDepLao-<phiên bản>-setup-win-x64.exe` + `HUONG-DAN.txt` + `SHA256SUMS.txt`. Cài vào
-  `%LOCALAPPDATA%\Programs\MultiDepLao`, Start Menu (+ Desktop tùy chọn); nếu app đang chạy thì yêu cầu người dùng tự
-  đóng; gỡ cài đặt không xóa `%LOCALAPPDATA%\MultiDepLao`.
-- `ban-portable\`: `MultiDepLao-<phiên bản>-portable-win-x64.zip` (thư mục gốc `MultiDepLao\` gồm app + `portable.txt` +
-  `HUONG-DAN.txt`) + `SHA256SUMS.txt`.
-- `_build\`: bản publish trung gian (thư mục mới mỗi lần, không ghi đè bản đang chạy ở `dist`); tự xóa khi đóng gói xong.
+Phiên bản lấy từ `<Version>` trong `src\MultiDepLao.App\MultiDepLao.App.csproj`. Kết quả trong `dist\release-<phiên bản>\`:
+bộ cài `MultiDepLao-<phiên bản>-setup-win-x64.exe`, bản portable `MultiDepLao-<phiên bản>-portable-win-x64.zip`, kèm
+`HUONG-DAN.txt` và `SHA256SUMS.txt`. Script dừng nếu thư mục publish có dữ liệu cá nhân (`profiles\`, `config.json`, log...).
+Bộ cài dùng tiếng Việt nếu có `build\Vietnamese.isl` (bản dịch không chính thức của Inno Setup), không thì tiếng Anh.
 
-**Gửi khách:** bấm đúp `build\Tao-goi-gui-khach.cmd` (hoặc `dist\Tao-goi-gui-khach.cmd`), chọn 1 = bản cài đặt,
-2 = bản portable, 3 = cả hai (có nhiều `release-*` thì hỏi phiên bản trước). Kết quả ở `dist\gui-khach\`:
-`MultiDepLao-<phiên bản>-cai-dat.zip` / `-portable.zip` + `SHA256SUMS.txt`; mỗi zip có đúng một thư mục gốc `MultiDepLao\`
-(cài đặt: setup + HUONG-DAN + MIEN-TRU-TRACH-NHIEM + QUYEN-RIENG-TU; portable: app + portable.txt + 3 file đó). Không cần đóng gói lại; chạy
-không hỏi: `powershell -ExecutionPolicy Bypass -File build\gui-khach.ps1 -Ban cai-dat|portable|ca-hai [-Version x.y.z]`.
-
-Script dừng nếu thư mục publish có dữ liệu cá nhân (`profiles\`, `config.json`, `*.log`, `mz.pid`, `avatars\`...).
-Hướng dẫn cho người dùng: `build\HUONG-DAN.txt`. Bộ cài dùng tiếng Việt nếu có `build\Vietnamese.isl` (bản dịch không
-chính thức của Inno Setup), không thì tiếng Anh. App chưa ký số → SmartScreen cảnh báo lần đầu chạy.
-
-Bản phát hành trên GitHub do GitHub Actions build khi đẩy tag `v<phiên bản>` (`.github/workflows/build.yml`).
+Bản sửa đổi phát hành lại phải đổi tên và logo (xem mục Giấy phép).

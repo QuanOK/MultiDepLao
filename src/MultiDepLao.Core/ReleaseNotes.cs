@@ -28,6 +28,17 @@ public static class ReleaseNotes
     // Ghi van tat: 1 dong / thay doi, chi nhung gi nguoi dung thay duoc. Viec nho gop thanh "Sua loi nho, cai thien giao dien".
     public static IReadOnlyList<ReleaseNote> All { get; } = new[]
     {
+        new ReleaseNote("0.4.8", "2026-11-23", new[]
+        {
+            N("Mã nguồn mở (GPL-3.0). Chỉ tải bản chính thức ở github.com/QuanOK/MultiDepLao (xem Giới thiệu).",
+              "Now open source (GPL-3.0). Download only from github.com/QuanOK/MultiDepLao (see About)."),
+            C("Tăng cường bảo mật: chỉ chạy Zalo PC có chữ ký số của VNG; Zalo Web chỉ ở trang của Zalo, link ngoài mở bằng trình duyệt.",
+              "Security hardening: only runs Zalo PC signed by VNG; Zalo Web stays on Zalo pages, outside links open in your browser."),
+            C("Mật khẩu khóa app mới cần ít nhất 6 ký tự (mật khẩu cũ vẫn dùng được).",
+              "New app-lock passwords need at least 6 characters (existing passwords still work)."),
+            F("Cấu hình hỏng không còn làm app không mở được; ảnh đại diện rất lớn được thu nhỏ.",
+              "A damaged config no longer stops the app from opening; very large avatars are scaled down."),
+        }),
         new ReleaseNote("0.4.7", "2026-11-23", new[]
         {
             N("Chấm đỏ trên biểu tượng thanh tác vụ khi có tin chưa đọc.", "Red dot on the taskbar icon when there are unread messages."),

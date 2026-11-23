@@ -20,7 +20,7 @@
 - Chỉ khởi chạy Zalo.exe có chữ ký số hợp lệ của VNG; bản sao Zalo bị thay sẽ được phát hiện và chép lại từ bản cài gốc.
 - Chỉ tắt những tiến trình Zalo do chính app khởi chạy (kiểm tra PID, thời điểm tạo, đường dẫn exe).
 - Kiểm tra dữ liệu cấu hình khi đọc (Id tài khoản, đường dẫn) để không đọc/ghi ra ngoài thư mục dữ liệu.
-- Zalo Web: chỉ cấp quyền thông báo/clipboard/lưu trữ cho miền `zalo.me`; link ra ngoài mở bằng trình duyệt mặc định.
+- Zalo Web: chỉ cấp quyền thông báo/clipboard/lưu trữ cho miền của Zalo (`zalo.me`, `zaloapp.com`); link ra ngoài mở bằng trình duyệt mặc định.
 - Bộ cài WebView2 (khi máy thiếu, chỉ sau khi bạn đồng ý) được tải từ Microsoft và kiểm chữ ký Microsoft trước khi chạy.
 - Mật khẩu khóa app lưu dạng băm PBKDF2-SHA256 có salt, không lưu mật khẩu gốc. Lưu ý: đây chỉ là khóa giao diện, không
   mã hóa dữ liệu (xem [docs/LIMITATIONS.md](docs/LIMITATIONS.md)).

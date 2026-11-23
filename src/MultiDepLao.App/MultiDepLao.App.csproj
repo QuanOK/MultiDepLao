@@ -18,7 +18,7 @@
     <UseWPF>true</UseWPF>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <ApplicationIcon>Assets\app.ico</ApplicationIcon>
-    <Version>0.4.7</Version>
+    <Version>0.4.8</Version>
     <!-- Chi giu tai nguyen tieng Anh (mac dinh, nam san trong DLL) cua .NET/WPF; bo cs, de, ja... (~16 MB). Giao dien
          Viet/Anh cua app nam trong bang chuoi rieng (Loc), khong dung satellite assembly. -->
     <SatelliteResourceLanguages>en</SatelliteResourceLanguages>

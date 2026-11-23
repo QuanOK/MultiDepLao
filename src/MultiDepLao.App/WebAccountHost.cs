@@ -256,7 +256,8 @@ public sealed class WebAccountHost : IDisposable
             var act = WebAccountLogic.ClassifyNavigation(e.Uri, _internalDomains, e.IsUserInitiated);
             if (act == WebAccountLogic.NavAction.Allow) return;
             e.Cancel = true;
-            if (Diag) _log.Info($"[{id}] [web-diag] chan dieu huong host={(Uri.TryCreate(e.Uri, UriKind.Absolute, out var bu) ? bu.Host : "?")} -> {act}");
+            // Chi ghi ten mien (khong duong dan/tham so) de chan doan dang nhap bi ket do chan nham.
+            _log.Info($"[{id}] [web] chan dieu huong host={(Uri.TryCreate(e.Uri, UriKind.Absolute, out var bu) ? bu.Host : "?")} user={e.IsUserInitiated} -> {act}");
             if (act == WebAccountLogic.NavAction.CancelAndOpenExternal) OpenExternal(id, e.Uri);
         };
         // Tin chua doc: chi xem dang dia chi favicon (FaviconUnreadDetector); khong luu, khong giai ma anh.

@@ -114,9 +114,13 @@ for ($i = 1; $i -le 10 -and (Test-Path -LiteralPath $buildDir); $i++) {
 if (Test-Path -LiteralPath $buildDir) { Write-Warning "Chua xoa duoc $buildDir (file dang bi giu) - xoa tay sau." }
 
 # Loi tat tao goi gui khach (bam dup) ngay trong dist
+#   (chi khi co script gui khach - ban ma nguon cong khai khong kem)
 $cmd = Join-Path $root 'dist\Tao-goi-gui-khach.cmd'
-[IO.File]::WriteAllText($cmd, "@echo off`r`ncall `"%~dp0..\build\Tao-goi-gui-khach.cmd`" %*`r`n", (New-Object Text.UTF8Encoding $false))
+$hasGuiKhach = Test-Path -LiteralPath (Join-Path $PSScriptRoot 'Tao-goi-gui-khach.cmd')
+if ($hasGuiKhach) {
+    [IO.File]::WriteAllText($cmd, "@echo off`r`ncall `"%~dp0..\build\Tao-goi-gui-khach.cmd`" %*`r`n", (New-Object Text.UTF8Encoding $false))
+}
 
 Write-Host "Gui ban cai dat : $outSetup"
 Write-Host "Gui ban portable: $outPortable"
-Write-Host "Tao zip gui khach: bam dup $cmd"
+if ($hasGuiKhach) { Write-Host "Tao zip gui khach: bam dup $cmd" }

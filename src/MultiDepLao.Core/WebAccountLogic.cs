@@ -5,6 +5,10 @@ public enum WebLinkAction { Default, OpenExternal, Block }
 /// <summary>Logic thuan cua tai khoan Zalo Web (khong phu thuoc WebView2/WPF) de test duoc.</summary>
 public static class WebAccountLogic
 {
+    /// <summary>Mien cua Zalo Web (ke ca mien con). Dang nhap QR chuyen trang chinh qua jr.zaloapp.com (thu tay
+    /// 2026-11-23: chi co zalo.me thi dang nhap treo o "Quet ma thanh cong").</summary>
+    public static readonly string[] ZaloDomains = { "zalo.me", "zaloapp.com" };
+
     /// <summary>
     /// Quyet dinh cho yeu cau mo cua so moi (target=_blank, window.open): link http/https NGOAI cac mien noi bo
     /// -> mo bang trinh duyet mac dinh (neu do nguoi dung bam; con lai chan); link noi bo / about:blank -> de mac dinh

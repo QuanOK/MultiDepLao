@@ -18,7 +18,7 @@ public partial class MainWindow
 
     private WebAccountHost CreateWebHost()
     {
-        var h = new WebAccountHost(ZaloWebUrl, _svc.Paths.WebDataDir, new[] { "zalo.me" }, _svc.Log, ZaloWebBrowserArgs);
+        var h = new WebAccountHost(ZaloWebUrl, _svc.Paths.WebDataDir, WebAccountLogic.ZaloDomains, _svc.Log, ZaloWebBrowserArgs);
         h.BackgroundColor = ThemeManager.HostBackground();
         ThemeManager.Changed += () => Dispatcher.BeginInvoke(() => { if (_webHost != null) _webHost.BackgroundColor = ThemeManager.HostBackground(); });
         h.SessionStateChanged += OnWebSessionChanged;

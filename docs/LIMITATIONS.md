@@ -32,7 +32,7 @@
 - [V] Đăng nhập bằng mã QR; tắt/mở app vẫn còn đăng nhập. Dùng song song Zalo PC và Web cùng tài khoản không bị đăng xuất.
 - [V] RAM: mỗi tài khoản Web thêm ~0,45 GB (tài khoản PC ~1 GB).
 - [V] Tin chưa đọc lấy từ biểu tượng trang (favicon), tối đa "5+"; máy khác font/DPI có thể chỉ hiện "Có tin mới".
-- [V] Từ 0.4.8 trang chính chỉ được ở miền `zalo.me`; link ra ngoài mở bằng trình duyệt mặc định.
+- [V] Từ 0.4.8 trang chính chỉ được ở miền của Zalo (`zalo.me`, `zaloapp.com`); link ra ngoài mở bằng trình duyệt mặc định.
 - [S] Lịch sử tin cũ có thể không đầy đủ như Zalo PC. Đổi loại PC ↔ Web sau khi tạo: chưa hỗ trợ.
 
 ## Bảo mật và khóa

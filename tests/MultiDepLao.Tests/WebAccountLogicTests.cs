@@ -141,6 +141,15 @@ public class WebAccountLogicTests
         Assert.False(WebAccountLogic.IsInternalHost("zalo.me", Array.Empty<string>()));
     }
 
+    // Dang nhap QR: trang chinh chuyen qua jr.zaloapp.com (khong tu nguoi dung bam) -> phai cho phep.
+    [Theory]
+    [InlineData("https://jr.zaloapp.com/x", WebAccountLogic.NavAction.Allow)]
+    [InlineData("https://id.zalo.me/account", WebAccountLogic.NavAction.Allow)]
+    [InlineData("https://zaloapp.com.evil.vn/", WebAccountLogic.NavAction.Cancel)]
+    [InlineData("https://evilzaloapp.com/", WebAccountLogic.NavAction.Cancel)]
+    public void ZaloDomains_LoginRedirect(string uri, WebAccountLogic.NavAction expected)
+        => Assert.Equal(expected, WebAccountLogic.ClassifyNavigation(uri, WebAccountLogic.ZaloDomains, false));
+
     // L6: giu file FileShare.Read tu luc kiem chu ky den khi bo cai thoat; bo cai co chu ky that van chay duoc.
     [Fact]
     public async Task InstallAsync_HoldsFileDuringVerifyAndStart_SignedExeStillRuns()

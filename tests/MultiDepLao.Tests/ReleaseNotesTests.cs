@@ -21,8 +21,8 @@ public sealed class ReleaseNotesTests
     [Fact]
     public void Since_FiltersNewer()
     {
-        Assert.Equal(new[] { "0.4.7", "0.4.6", "0.4.5", "0.4.4", "0.4.3", "0.4.2", "0.4.1", "0.4.0", "0.3.4", "0.3.3" }, ReleaseNotes.Since("0.3.2").Select(n => n.Version));
-        Assert.Empty(ReleaseNotes.Since("0.4.7"));
+        Assert.Equal(new[] { "0.4.8", "0.4.7", "0.4.6", "0.4.5", "0.4.4", "0.4.3", "0.4.2", "0.4.1", "0.4.0", "0.3.4", "0.3.3" }, ReleaseNotes.Since("0.3.2").Select(n => n.Version));
+        Assert.Empty(ReleaseNotes.Since("0.4.8"));
         Assert.Equal(ReleaseNotes.All.Count, ReleaseNotes.Since(null).Count);
         Assert.Equal(ReleaseNotes.All.Count, ReleaseNotes.Since("garbage").Count);
     }
