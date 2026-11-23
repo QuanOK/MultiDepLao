@@ -16,7 +16,7 @@ public class AtomicFileTests
     }
 
     [Fact]
-    public void TargetBrieflyLocked_RetriesAndSucceeds()
+    public async Task TargetBrieflyLocked_RetriesAndSucceeds()
     {
         // Mo phong Defender/bo lap chi muc giu file dich trong tich tac (khong cho xoa/ghi de).
         using var t = new TempRoot();
@@ -26,7 +26,7 @@ public class AtomicFileTests
         var holder = new FileStream(f, FileMode.Open, FileAccess.Read, FileShare.Read);
         var release = Task.Run(async () => { await Task.Delay(60); holder.Dispose(); });
         AtomicFile.WriteAllText(f, "moi");
-        release.Wait();
+        await release;
         Assert.Equal("moi", File.ReadAllText(f));
         Assert.Empty(Directory.GetFiles(t.Paths.Root, "*.tmp"));
     }
